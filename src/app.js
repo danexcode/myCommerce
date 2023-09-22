@@ -16,6 +16,10 @@ function createApp() {
   //   res.send('Hola, soy una nueva ruta');
   // });
 
+  app.use(boomErrorHandler);
+  app.use(ormErrorHandler);
+  app.use(errorHandler);
+
   routerApi(app);
 
   return app;
