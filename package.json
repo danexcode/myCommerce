@@ -1,0 +1,11 @@
+{
+  "name": "commerce_online",
+  "version": "1.0.0",
+  "description": "An API REST for a commerce online",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "danifanton",
+  "license": "MIT"
+}
