@@ -36,6 +36,7 @@ const UserSchema = {
   phone: {
     type: DataTypes.STRING,
     allowNull: true,
+    defaultValue: '',
   },
   recoveryToken: {
     type: DataTypes.STRING,
