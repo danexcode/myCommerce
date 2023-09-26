@@ -3,29 +3,37 @@ const { models } = require('../db/sequelize');
 
 class OrderService {
   async create(data) {
-    const user = await models.Customer.findByPk(data.userId);
+    const user = await models.User.findByPk(data.userId);
     if (!user) {
       throw boom.notFound('user not found');
     }
-    const newOrder = await models.Order.create(data);
+
+    const orderBody = {
+      userId: data.userId,
+      total: data.orderTotal,
+      referenceBankCode: data.referenceBankCode,
+    };
+    const newOrder = await models.Order.create(orderBody);
     return newOrder;
   }
 
-  async addItem(data) {
-    const product = await models.Product.findByPk(data.productId);
-    if (!product) {
-      throw boom.notFound('product not found');
+  async addItems(data) {
+    const items = [];
+    const orderId = data.orderId;
+    const products = data.products;
+    for (let i = 0; i < products.length; i++){
+      const itemBody = {
+        orderId,
+        ...products[i],
+      };
+      const newItem = await models.OrderProduct.create(itemBody);
+      items.push(newItem);
     }
-    const order = await models.Order.findByPk(data.orderId);
-    if (!order) {
-      throw boom.notFound('order not found');
-    }
-    const newItem = await models.OrderProduct.create(data);
-    return newItem;
+    return items;
   }
 
   async findByUser(userId) {
-    const user = await models.Customer.findByPk(data.userId);
+    const user = await models.User.findByPk(userId);
     if (!user) {
       throw boom.notFound('user not found');
     }
@@ -48,6 +56,7 @@ class OrderService {
     if (!order) {
       throw boom.notFound('order not found');
     }
+    delete order.dataValues.user.dataValues.password;
     return order;
   }
 

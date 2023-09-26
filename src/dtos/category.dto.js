@@ -18,16 +18,7 @@ const updateCategoryDto = Joi.object({
 });
 
 const getCategoryDto = Joi.object({
-  id: Joi.when('name', {
-    is: Joi.not().exist(),
-    then: id.required(),
-    then: name.not().exist(),
-  }),
-  name: Joi.when('id', {
-    is: Joi.not().exist(),
-    then: name.required(),
-    then: id.not().exist(),
-  })
+  id: id.required()
 });
 
 const getCategoryNameDto = Joi.object({

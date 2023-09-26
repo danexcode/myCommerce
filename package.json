@@ -2,9 +2,15 @@
   "name": "commerce_online",
   "version": "1.0.0",
   "description": "An API REST for a commerce online",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "lint": "eslint",
+    "migrations:generate": "sequelize-cli migration:generate --name",
+    "migrations:run": "sequelize-cli db:migrate",
+    "migrations:revert": "sequelize-cli db:migrate:undo"
   },
   "author": "danifanton",
   "license": "MIT",
@@ -14,13 +20,18 @@
     "prettier": "^3.0.3"
   },
   "dependencies": {
-    "@hapi/boom": "^10.0.1",
+    "@hapi/boom": "^10.0.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "joi": "^17.10.2",
     "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.5",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
+    "pg": "^8.11.3",
     "sequelize": "^6.33.0",
     "sequelize-cli": "^6.6.1"
   }

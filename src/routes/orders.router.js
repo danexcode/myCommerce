@@ -1,25 +1,46 @@
 const express = require('express');
+const passport = require('passport');
+
+const OrderService = require('../services/order.service');
+const validateDataHandler = require('../middlewares/validator.handler');
+const { checkRoles } = require('../middlewares/auth.handler');
+const { getOrderDto, createOrderDto } = require('../dtos/order.dto');
+const { checkSum } = require('../middlewares/math.handler');
 
 const router = express.Router();
+const service = new OrderService();
 
-router.get('/', (req, res) => {
+router.get('/:id',
+  passport.authenticate('jwt', {session: false}),
+  checkRoles('admin', 'customer'),
+  validateDataHandler(getOrderDto, 'params'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const order = await service.findOne(id);
+      res.json(order);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
-});
-
-router.get('/:userId', (req, res) => {
-
-});
-
-router.post('/', (req, res) => {
-
-});
-
-router.patch('/:id', (req, res) => {
-
-});
-
-router.delete('/:id', (req, res) => {
-
-});
+router.post('/',
+  passport.authenticate('jwt', {session: false}),
+  checkRoles('admin', 'customer'),
+  validateDataHandler(createOrderDto, 'body'),
+  checkSum,
+  async (req, res, next) => {
+    try {
+      const body = req.body;
+      const newOrder = await service.create(body);
+      body.orderId = newOrder.id;
+      const orderProducts = await service.addItems(body);
+      res.status(201).json({ newOrder, orderProducts });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 module.exports = router;

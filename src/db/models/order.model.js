@@ -14,6 +14,11 @@ const OrderSchema = {
     type: DataTypes.FLOAT,
     allowNull: false,
   },
+  referenceBankCode: {
+    type: DataTypes.FLOAT,
+    field: 'bank_code',
+    allowNull: false,
+  },
   userId: {
     type: DataTypes.INTEGER,
     field: 'user_id',

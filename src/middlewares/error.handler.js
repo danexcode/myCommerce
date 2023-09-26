@@ -1,6 +1,7 @@
 const { ValidationError } = require('sequelize');
 
 function boomErrorHandler(err, req, res, next) {
+  console.log(err);
   if (err.isBoom) {
     const { output } = err;
     res.status(output.statusCode).json(output.payload);
