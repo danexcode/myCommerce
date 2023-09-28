@@ -75,7 +75,7 @@ router.delete('/:name',
       const categoryDetails = await service.findByName(name);
       const id = categoryDetails.id;
       await service.delete(id);
-      res.status(201).json({id});
+      res.status(200).json({id});
     } catch (error) {
       next(error);
     }

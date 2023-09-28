@@ -1,6 +1,8 @@
 const boom = require('@hapi/boom');
 const { models } = require('../db/sequelize');
 
+//@todo: Update stock field when order is created
+
 class OrderService {
   async create(data) {
     const user = await models.User.findByPk(data.userId);

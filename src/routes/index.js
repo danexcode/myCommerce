@@ -1,4 +1,7 @@
 const express = require('express');
+const swaggerUi = require("swagger-ui-express");
+
+const swaggerDoc = require("../../swagger.json");
 
 const productsRouter = require('./products.router');
 const categoriesRouter = require('./categories.router');
@@ -16,6 +19,7 @@ function routerApi(app) {
   router.use('/orders', ordersRouter);
   router.use('/auth', authRouter);
   router.use('/profile', profileRouter);
+  router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 }
 
 module.exports = routerApi;

@@ -60,7 +60,11 @@ class AuthService {
         throw boom.unauthorized();
       }
       const hash = await bcrypt.hash(newPassword, 10);
-      await service.update(user.id, {recoveryToken: null, password: hash});
+      await service.update(user.id, {
+        recoveryToken: null,
+        password: hash,
+        updatedAt: Date.now(),
+      });
       return { message: 'password changed' };
     } catch (error) {
       throw boom.unauthorized();

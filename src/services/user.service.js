@@ -26,7 +26,6 @@ class UserService {
     const user = await models.User.findOne({
       where: { email }
     });
-    delete user.dataValues.password;
     return user;
   }
 

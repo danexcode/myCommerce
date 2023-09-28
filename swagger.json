@@ -1,0 +1,3109 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "myCommerce",
+    "description": "myCommerce API REST is a professional-grade application programming interface (API) designed specifically for an online commerce platform. It offers a comprehensive set of features and functionalities to facilitate seamless communication and data management between client applications and the commerce platform. [myCommerce repository](https://github.com/Danifantonrxd/myCommerce)",
+    "contact": {
+      "email": "danielrxd0912@gmail.com"
+    },
+    "version": "1.0.11"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Operations on user"
+    },
+    {
+      "name": "Categories",
+      "description": "Operations on categories"
+    },
+    {
+      "name": "Products",
+      "description": "Operations on products"
+    },
+    {
+      "name": "Orders",
+      "description": "Operations on orders"
+    },
+    {
+      "name": "Auth",
+      "description": "Manage sessions"
+    },
+    {
+      "name": "Profile",
+      "description": "Search profile data"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Add user",
+        "description": "Endpoint to create an user in the database",
+        "requestBody": {
+          "required": true,
+          "description": "Create user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password",
+                  "firstName",
+                  "lastName"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "user@email.com",
+                    "description": "must be a valid email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "myPassword",
+                    "description": "must contain at least 8 characters"
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "Emilia",
+                    "description": "Min: 2, Max: 50 Characters"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Clarke",
+                    "description": "Min: 2, Max: 50 Characters"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "+11254789454"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "successful operation, return the user missing the password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 5
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "user@email.com"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "Emilia"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Clarke"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "customer",
+                      "description": "Used to grant access"
+                    },
+                    "phone": {
+                      "type": "string",
+                      "example": "+11254789454"
+                    },
+                    "recoveryToken": {
+                      "type": "string",
+                      "description": "this field is used to recover user password"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2023-09-25 22:33:01.621+00"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2023-09-25 22:33:01.621+00"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid product object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something is missing"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict with data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 409
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "SequelizeUniqueConstraintError"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string",
+                            "example": "email must be unique"
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "unique violation"
+                          },
+                          "...": {
+                            "type": "string",
+                            "example": "and so much properties"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "get all users",
+        "description": "* Must be logged and have an admin user",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "jwt-token signed"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": "15"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "user@email.com"
+                      },
+                      "firstName": {
+                        "type": "string",
+                        "example": "Emilia"
+                      },
+                      "lastName": {
+                        "type": "string",
+                        "example": "Clarke"
+                      },
+                      "role": {
+                        "type": "string",
+                        "example": "customer",
+                        "description": "Used to grant access"
+                      },
+                      "phone": {
+                        "type": "string",
+                        "example": "+11254789454"
+                      },
+                      "recoveryToken": {
+                        "type": "string",
+                        "description": "this field is used to recover user password"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2023-09-25 22:33:01.621+00"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2023-09-25 22:33:01.621+00"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "your role is not allow"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "get user by id",
+        "description": "* Must be logged",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The user_id you want to fetch. ",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 16
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "jwt-token signed"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": "15"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "user@email.com"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "Emilia"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Clarke"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "customer",
+                      "description": "Used to grant access"
+                    },
+                    "phone": {
+                      "type": "string",
+                      "example": "+11254789454"
+                    },
+                    "recoveryToken": {
+                      "type": "string",
+                      "description": "this field is used to recover user password"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2023-09-25 22:33:01.621+00"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2023-09-25 22:33:01.621+00"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "your role is not allow"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "update user by id",
+        "description": "* Must be logged as the user you want to update or as an admin",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The user_id you want to update. ",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 16
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "jwt-token signed"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Properties are optional",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "user@email.com",
+                    "description": "must be a valid email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "myPassword",
+                    "description": "must contain at least 8 characters"
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "Emilia",
+                    "description": "Min: 2, Max: 50 Characters"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Clarke",
+                    "description": "Min: 2, Max: 50 Characters"
+                  },
+                  "role": {
+                    "type": "string",
+                    "example": "admin"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "+11254789454"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation, user updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": "15"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "user@email.com"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "Emilia"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Clarke"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "customer",
+                      "description": "Used to grant access"
+                    },
+                    "phone": {
+                      "type": "string",
+                      "example": "+11254789454"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2023-09-25 22:33:01.621+00"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2023-09-25 22:33:01.621+00"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid user object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something is missing"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict with data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 409
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "SequelizeUniqueConstraintError"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string",
+                            "example": "email must be unique"
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "unique violation"
+                          },
+                          "...": {
+                            "type": "string",
+                            "example": "and so much properties"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "delete user by id",
+        "description": "* Must be logged as the user you want to delete or as an admin",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The user_id you want to delete. ",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 16
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "jwt-token signed"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation, user delete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": "15",
+                      "description": "id of user that was deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "your role is not allow"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories": {
+      "post": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Add category",
+        "description": "Endpoint to create a category in the database, * Must be logged as an admin user",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "jwt-token signed"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Create category object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "description",
+                  "image"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Electronics",
+                    "description": "Min: 3, Max: 50 Characters"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "electronic devices",
+                    "description": "Min: 3 Characters"
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": "https://messi.com/image/1",
+                    "description": "Must be a valid url"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "successful operation, return the category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid category object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something is missing"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict with data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 409
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "SequelizeUniqueConstraintError"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string",
+                            "example": "name must be unique"
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "unique violation"
+                          },
+                          "...": {
+                            "type": "string",
+                            "example": "and so much properties"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "get all categories",
+        "description": "Endpoint to fetch all categories in database",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories/{name}": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "get category by name",
+        "description": "Endpoint to fetch a category in database",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "The name of the category you want to fetch. ",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Electronics"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "category not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "update category by name",
+        "description": "* Must be logged as an admin user",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "The category name you want to update. ",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Electronics"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "jwt-token signed"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Properties are optional",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Electronics expensives"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "same description"
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": "https://messi.com/new-image/1"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation, category updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid category object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something is missing"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "category not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict with data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 409
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "SequelizeUniqueConstraintError"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string",
+                            "example": "name must be unique"
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "unique violation"
+                          },
+                          "...": {
+                            "type": "string",
+                            "example": "and so much properties"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "delete category by name",
+        "description": "* Must be logged as an admin user",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "The category name you want to delete. ",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 16
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "jwt-token signed"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation, user delete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": "15",
+                      "description": "id of category that was deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "your role is not allow"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "category not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Add product",
+        "description": "Endpoint to create a product in the database, * Must be logged as an admin user",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "jwt-token signed"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Create product object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Washer",
+                    "description": "Min: 3, Max: 50 Characters"
+                  },
+                  "price": {
+                    "type": "number",
+                    "example": 500.5,
+                    "description": "Min 1"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Can wash clothes",
+                    "description": "Min 10 Characters"
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": "https://washers.com/image/1",
+                    "description": "Must be a valid url"
+                  },
+                  "stock": {
+                    "type": "integer",
+                    "example": 50
+                  },
+                  "categoryId": {
+                    "type": "integer",
+                    "example": 1,
+                    "description": "Must exits"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid product object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something is missing"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "category not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict with data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 409
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "SequelizeUniqueConstraintError"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string",
+                            "example": "name must be unique"
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "unique violation"
+                          },
+                          "...": {
+                            "type": "string",
+                            "example": "and so much properties"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "get all products",
+        "description": "Endpoint to fetch all products",
+        "parameters": [
+          {
+            "name": "price",
+            "in": "query",
+            "description": "Product price you want to filter by",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 500
+            }
+          },
+          {
+            "name": "price_min",
+            "in": "query",
+            "description": "Use with price_max to filter by a price range",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 200
+            }
+          },
+          {
+            "name": "price_max",
+            "in": "query",
+            "description": "Use with price_min to filter by a price range",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 600
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Use with offset for paginating",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 100
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Use with limit for paginating",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, check query params",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Check query params"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "get product by id",
+        "description": "Endpoint to fetch a product by id, includes the category information",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The product_id you want to fetch. ",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 85
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 32,
+                      "description": "autoincrement primary key"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Washer",
+                      "description": "Must be unique"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "wash a lot of clothes",
+                      "description": "miami cofirm!"
+                    },
+                    "image": {
+                      "type": "string",
+                      "example": "https://washers.com/image/1"
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 500.5,
+                      "description": "dollars"
+                    },
+                    "stock": {
+                      "type": "integer",
+                      "example": 50,
+                      "description": "amount of this product in stock"
+                    },
+                    "categoryId": {
+                      "type": "integer",
+                      "example": 1,
+                      "description": "foreign key of the category"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2023-09-25 22:33:01.621+00",
+                      "description": "default value: NOW"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2023-09-25 22:33:01.621+00",
+                      "description": "default value: NOW"
+                    },
+                    "category": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 15,
+                          "description": "autoincrement primary key"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Electronics",
+                          "description": "Must be unique"
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "electronic devices",
+                          "description": "miami cofirm!"
+                        },
+                        "image": {
+                          "type": "string",
+                          "example": "https://messi.com/image/1"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-09-25 22:33:01.621+00",
+                          "description": "default value: NOW"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-09-25 22:33:01.621+00",
+                          "description": "default value: NOW"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "product not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "product not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "update product by id",
+        "description": "* Must be logged as an admin user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The product_id you want to update. ",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 565
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "jwt-token signed"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Properties are optional",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Washer",
+                    "description": "Min: 3, Max: 50 Characters"
+                  },
+                  "price": {
+                    "type": "number",
+                    "example": 500.5,
+                    "description": "Min 1"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Can wash clothes",
+                    "description": "Min 10 Characters"
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": "https://washers.com/image/1",
+                    "description": "Must be a valid url"
+                  },
+                  "stock": {
+                    "type": "integer",
+                    "example": 50
+                  },
+                  "categoryId": {
+                    "type": "integer",
+                    "example": 1,
+                    "description": "Must exits"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation, product updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid product object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something is missing or wrong"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "product not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "product not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict with data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 409
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "SequelizeUniqueConstraintError"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string",
+                            "example": "name must be unique"
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "unique violation"
+                          },
+                          "...": {
+                            "type": "string",
+                            "example": "and so much properties"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "delete product by id",
+        "description": "* Must be logged as an admin user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The product_id you want to delete. ",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 45
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "jwt-token signed"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation, product delete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": "15",
+                      "description": "id of user that was deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "your role is not allow"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "product not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Add order",
+        "description": "Endpoint to register a purchase in the database, * Must be logged.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "jwt-token signed"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Create order object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "userId",
+                  "orderTotal",
+                  "referenceBankCode",
+                  "products"
+                ],
+                "properties": {
+                  "userId": {
+                    "type": "integer",
+                    "example": 15,
+                    "description": "Must exits"
+                  },
+                  "orderTotal": {
+                    "type": "number",
+                    "example": 500.5,
+                    "description": "order price totalized in dollars"
+                  },
+                  "referenceBankCode": {
+                    "type": "integer",
+                    "example": 957844,
+                    "description": "Transaction bank code of the payment"
+                  },
+                  "products": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "productId",
+                        "amount",
+                        "productPrice"
+                      ],
+                      "properties": {
+                        "productId": {
+                          "type": "integer",
+                          "example": 45,
+                          "description": "Must exits"
+                        },
+                        "amount": {
+                          "type": "integer",
+                          "example": 2,
+                          "description": "quantity of the product to buy"
+                        },
+                        "productPrice": {
+                          "type": "number",
+                          "example": 150.99
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "successful operation, order created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "newOrder": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 4
+                        },
+                        "total": {
+                          "type": "number",
+                          "example": 123.99
+                        },
+                        "referenceBankCode": {
+                          "type": "integer",
+                          "example": 198123
+                        },
+                        "userId": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-09-27T22:43:05.635Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-09-27T22:43:05.635Z"
+                        }
+                      }
+                    },
+                    "orderProducts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "orderId": {
+                            "type": "integer",
+                            "example": 4
+                          },
+                          "productId": {
+                            "type": "integer",
+                            "example": 45
+                          },
+                          "amount": {
+                            "type": "integer",
+                            "example": 4
+                          },
+                          "productPrice": {
+                            "type": "number",
+                            "example": 45.99
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2023-09-27T22:43:05.635Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2023-09-27T22:43:05.635Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid order object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something is missing or wrong"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, You have to be logged"
+          },
+          "404": {
+            "description": "user not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Conflict with data, check the products ids",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Sequelize foreign key constraint violated"
+                    },
+                    "stack": {
+                      "type": "string",
+                      "example": "error details"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "get order by id",
+        "description": "Endpoint to fetch an order by id, includes the user and the items information, * Must be logged",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The order_id you want to fetch. ",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 85
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "jwt-token signed"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 4
+                    },
+                    "total": {
+                      "type": "number",
+                      "example": 599.99
+                    },
+                    "referenceBankCode": {
+                      "type": "integer",
+                      "example": 1239239
+                    },
+                    "userId": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2023-09-27T22:43:05.635Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2023-09-27T22:43:05.635Z"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Washer"
+                          },
+                          "image": {
+                            "type": "string",
+                            "example": "https://messi.com/image/1"
+                          },
+                          "description": {
+                            "type": "string",
+                            "example": "wash clothes"
+                          },
+                          "price": {
+                            "type": "number",
+                            "example": 45.6
+                          },
+                          "stock": {
+                            "type": "integer",
+                            "example": 80
+                          },
+                          "categoryId": {
+                            "type": "integer",
+                            "example": 8
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2023-09-27T22:43:05.635Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2023-09-27T22:43:05.635Z"
+                          },
+                          "OrderProduct": {
+                            "type": "object",
+                            "properties": {
+                              "orderId": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "productId": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "amount": {
+                                "type": "integer",
+                                "example": 4
+                              },
+                              "productPrice": {
+                                "type": "number",
+                                "example": 40
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2023-09-27T22:43:05.635Z"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "example": "2023-09-27T22:43:05.635Z"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, You have to be logged"
+          },
+          "404": {
+            "description": "order not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "order not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "login with email and password",
+        "description": "Endpoint to login",
+        "requestBody": {
+          "required": true,
+          "description": "Create login object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "your@email.com",
+                    "description": "must be a valid email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "your password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation, order created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "access_token": {
+                      "type": "string",
+                      "example": "jwt-token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid order object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something is missing or wrong"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, bad email or password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/recovery": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "recover user password via mail",
+        "description": "Will send an email with a link that has a jwt-token",
+        "requestBody": {
+          "required": true,
+          "description": "Create recovery object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "your@email.com",
+                    "description": "must be a valid email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation, order created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "messsage": {
+                      "type": "string",
+                      "example": "email sent"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid order object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something is missing or wrong"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, bad email or password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/change-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "change user password",
+        "description": "Will send an email with a link that has a jwt-token",
+        "requestBody": {
+          "required": true,
+          "description": "Create change-password object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "example": "jwt-token",
+                    "description": "must exits in the database"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "example": "new password",
+                    "description": "Min 8 characters"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation, order created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "messsage": {
+                      "type": "string",
+                      "example": "password changed"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid order object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something is missing or wrong"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, bad email or password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profile/my-user": {
+      "post": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Watch user information",
+        "description": "Endpoint to see user information",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "jwt-token signed"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, check jwt-token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profile/my-orders": {
+      "post": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Watch user orders",
+        "description": "Endpoint for watching all the user's orders",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "jwt-token signed"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 4
+                      },
+                      "total": {
+                        "type": "number",
+                        "example": 123.99
+                      },
+                      "referenceBankCode": {
+                        "type": "integer",
+                        "example": 198123
+                      },
+                      "userId": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2023-09-27T22:43:05.635Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2023-09-27T22:43:05.635Z"
+                      },
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "orderId": {
+                              "type": "integer",
+                              "example": 4
+                            },
+                            "productId": {
+                              "type": "integer",
+                              "example": 45
+                            },
+                            "amount": {
+                              "type": "integer",
+                              "example": 4
+                            },
+                            "productPrice": {
+                              "type": "number",
+                              "example": 45.99
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2023-09-27T22:43:05.635Z"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "example": "2023-09-27T22:43:05.635Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, check jwt-token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "description": "Model of database user table",
+        "required": [
+          "id",
+          "email",
+          "password",
+          "firstName",
+          "lastName",
+          "role",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 15,
+            "description": "Autoincrement primary key"
+          },
+          "email": {
+            "type": "string",
+            "example": "user@email.com",
+            "description": "must be unique"
+          },
+          "password": {
+            "type": "string",
+            "example": "myPassword",
+            "description": "will not be return in a json response ever"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "Emilia"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Clarke"
+          },
+          "role": {
+            "type": "string",
+            "example": "customer",
+            "description": "default value: customer"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+11254789454"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2023-09-25 22:33:01.621+00",
+            "description": "default value: NOW"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2023-09-25 22:33:01.621+00",
+            "description": "default value: NOW"
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "description": "Model of database category table",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "image",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 15,
+            "description": "autoincrement primary key"
+          },
+          "name": {
+            "type": "string",
+            "example": "Electronics",
+            "description": "Must be unique"
+          },
+          "description": {
+            "type": "string",
+            "example": "electronic devices",
+            "description": "miami cofirm!"
+          },
+          "image": {
+            "type": "string",
+            "example": "https://messi.com/image/1"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2023-09-25 22:33:01.621+00",
+            "description": "default value: NOW"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2023-09-25 22:33:01.621+00",
+            "description": "default value: NOW"
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "description": "Model of database product table",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "image",
+          "createdAt",
+          "updatedAt",
+          "price",
+          "stock",
+          "categoryId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 32,
+            "description": "autoincrement primary key"
+          },
+          "name": {
+            "type": "string",
+            "example": "Washer",
+            "description": "Must be unique"
+          },
+          "description": {
+            "type": "string",
+            "example": "wash a lot of clothes",
+            "description": "miami cofirm!"
+          },
+          "image": {
+            "type": "string",
+            "example": "https://washers.com/image/1"
+          },
+          "price": {
+            "type": "number",
+            "example": 500.5,
+            "description": "dollars"
+          },
+          "stock": {
+            "type": "integer",
+            "example": 50,
+            "description": "amount of this product in stock"
+          },
+          "categoryId": {
+            "type": "integer",
+            "example": 1,
+            "description": "foreign key of the category"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2023-09-25 22:33:01.621+00",
+            "description": "default value: NOW"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2023-09-25 22:33:01.621+00",
+            "description": "default value: NOW"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "description": "Model of database order table",
+        "required": [
+          "id",
+          "total",
+          "referenceBankCode",
+          "createdAt",
+          "updatedAt",
+          "userId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 32,
+            "description": "autoincrement primary key"
+          },
+          "total": {
+            "type": "number",
+            "example": 1546.5,
+            "description": "order price totalized in dollars"
+          },
+          "referenceBankCode": {
+            "type": "integer",
+            "example": 123254687,
+            "description": "Transaction bank code of the payment"
+          },
+          "userId": {
+            "type": "integer",
+            "example": 15,
+            "description": "user id foreign key"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2023-09-25 22:33:01.621+00",
+            "description": "default value: NOW"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2023-09-25 22:33:01.621+00",
+            "description": "default value: NOW"
+          }
+        }
+      },
+      "OrderProduct": {
+        "type": "object",
+        "description": "Model of database order-product table",
+        "properties": {
+          "orderId": {
+            "type": "integer",
+            "example": 1,
+            "description": "order id foreign key"
+          },
+          "productId": {
+            "type": "integer",
+            "example": 2,
+            "description": "product id foreign key"
+          },
+          "amount": {
+            "type": "integer",
+            "example": 4,
+            "description": "quantity of the product buyed"
+          },
+          "productPrice": {
+            "type": "number",
+            "example": 54.99,
+            "description": "this field is for saving the price changed across time"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2023-09-25 22:33:01.621+00",
+            "description": "default value: NOW"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2023-09-25 22:33:01.621+00",
+            "description": "default value: NOW"
+          }
+        }
+      }
+    }
+  }
+}

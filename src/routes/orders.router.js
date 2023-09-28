@@ -12,7 +12,6 @@ const service = new OrderService();
 
 router.get('/:id',
   passport.authenticate('jwt', {session: false}),
-  checkRoles('admin', 'customer'),
   validateDataHandler(getOrderDto, 'params'),
   async (req, res, next) => {
     try {
@@ -27,7 +26,6 @@ router.get('/:id',
 
 router.post('/',
   passport.authenticate('jwt', {session: false}),
-  checkRoles('admin', 'customer'),
   validateDataHandler(createOrderDto, 'body'),
   checkSum,
   async (req, res, next) => {

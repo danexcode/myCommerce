@@ -3,7 +3,7 @@ const passport = require('passport');
 
 const UserService = require('./../services/user.service');
 const validateDataHandler = require('./../middlewares/validator.handler');
-const { checkRoles } = require('../middlewares/auth.handler');
+const { checkRoles, checkUserLogged } = require('../middlewares/auth.handler');
 const { updateUserDto, createUserDto, getUserDto } = require('../dtos/user.dto');
 
 const router = express.Router();
@@ -24,7 +24,6 @@ router.get('/',
 
 router.get('/:id',
   passport.authenticate('jwt', { session: false }),
-  checkRoles('admin'),
   validateDataHandler(getUserDto, 'params'),
   async (req, res, next) => {
     try {
@@ -52,7 +51,7 @@ router.post('/',
 
 router.patch('/:id',
   passport.authenticate('jwt', { session: false }),
-  checkRoles('admin', 'customer'),
+  checkUserLogged,
   validateDataHandler(getUserDto, 'params'),
   validateDataHandler(updateUserDto, 'body'),
   async (req, res, next) => {
@@ -69,13 +68,13 @@ router.patch('/:id',
 
 router.delete('/:id',
   passport.authenticate('jwt', { session: false }),
-  checkRoles('admin'),
+  checkUserLogged,
   validateDataHandler(getUserDto, 'params'),
   async (req, res, next) => {
     try {
       const { id } = req.params;
       await service.delete(id);
-      res.status(201).json({ id });
+      res.status(200).json({ id });
     } catch (error) {
       next(error);
     }

@@ -18,7 +18,7 @@ const updateCategoryDto = Joi.object({
 });
 
 const getCategoryDto = Joi.object({
-  id: id.required()
+  name: name.required()
 });
 
 const getCategoryNameDto = Joi.object({

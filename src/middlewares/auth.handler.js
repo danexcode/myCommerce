@@ -22,6 +22,15 @@ function checkRoles(...roles) {
   }
 }
 
+function checkUserLogged(req, res, next){
+  const { sub, role } = req.user;
+  const idToCheck = req.params.id;
 
+  if (role === 'admin' || idToCheck == sub) {
+    next();
+  } else {
+    next(boom.unauthorized());
+  }
+}
 
-module.exports = { checkApiKey, checkRoles }
+module.exports = { checkApiKey, checkRoles, checkUserLogged }
