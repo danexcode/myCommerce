@@ -1,7 +1,9 @@
 const express = require('express');
 const swaggerUi = require("swagger-ui-express");
+const path = require('path');
 
-const swaggerDoc = require("../../swagger.json");
+const swaggerPath = path.join(__dirname, '../../swagger.json');
+const swaggerDoc = require(swaggerPath);
 
 const productsRouter = require('./products.router');
 const categoriesRouter = require('./categories.router');
