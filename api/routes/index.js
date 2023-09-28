@@ -5,10 +5,13 @@ const { SwaggerUIBundle, SwaggerUIStandalonePreset }  = require("swagger-ui-dist
 
 const swaggerDoc = require('../../swagger.json');
 
+const CSS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css';
+
 const options = {
   swaggerOptions: {
       url: "/api-docs/swagger.json",
   },
+  customCssUrl: CSS_URL,
 };
 
 const productsRouter = require('./products.router');
@@ -28,7 +31,7 @@ function routerApi(app) {
   router.use('/auth', authRouter);
   router.use('/profile', profileRouter);
   router.use('/api-docs', swaggerUi.serveFiles(swaggerDoc, options), swaggerUi.setup(swaggerDoc, options));
-  router.get("/api-docs/swagger.json", (req, res) => res.json(swaggerDoc));
+  //router.get("/api-docs/swagger.json", (req, res) => res.json(swaggerDoc));
 }
 
 module.exports = routerApi;
