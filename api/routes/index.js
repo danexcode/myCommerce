@@ -1,9 +1,15 @@
 const express = require('express');
-const swaggerUi = require("swagger-ui-express");
-const path = require('path');
 
-const swaggerPath = path.join(__dirname, '../../swagger.json');
-const swaggerDoc = require(swaggerPath);
+const swaggerUi = require('swagger-ui-express');
+const { SwaggerUIBundle, SwaggerUIStandalonePreset }  = require("swagger-ui-dist");
+
+const swaggerDoc = require('../../swagger.json');
+
+const options = {
+  swaggerOptions: {
+      url: "/api-docs/swagger.json",
+  },
+};
 
 const productsRouter = require('./products.router');
 const categoriesRouter = require('./categories.router');
@@ -21,7 +27,8 @@ function routerApi(app) {
   router.use('/orders', ordersRouter);
   router.use('/auth', authRouter);
   router.use('/profile', profileRouter);
-  router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+  router.use('/api-docs', swaggerUi.serveFiles(swaggerDoc, options), swaggerUi.setup(swaggerDoc, options));
+  router.get("/api-docs/swagger.json", (req, res) => res.json(swaggerDoc));
 }
 
 module.exports = routerApi;
