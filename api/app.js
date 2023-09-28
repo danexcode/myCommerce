@@ -1,4 +1,5 @@
 const express = require('express');
+const pool = require('./db/libs/postgres.pool');
 const cors = require('cors');
 const routerApi = require('./routes');
 const { errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/error.handler');
