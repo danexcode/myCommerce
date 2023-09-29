@@ -1,13 +1,71 @@
-# myCommerce
-myCommerce API REST is a professional-grade application programming interface (API) designed specifically for an online commerce platform. It offers a comprehensive set of features and functionalities to facilitate seamless communication and data management between client applications and the commerce platform. Let's break down the key components of myCommerce API REST:
+<h1 align="center" id="title">myCommerce</h1>
 
-1. CRUD Functions:
-myCommerce API REST provides full support for CRUD (Create, Read, Update, Delete) operations. It enables clients to interact with the underlying commerce platform by creating new resources, retrieving existing ones, updating resource data, and deleting resources as needed. This allows for efficient management of products, orders, customer information, and other essential commerce-related entities.
+<p align="center"><img src="https://socialify.git.ci/Danifantonrxd/myCommerce/image?font=Source%20Code%20Pro&amp;language=1&amp;name=1&amp;owner=1&amp;pattern=Circuit%20Board&amp;stargazers=1&amp;theme=Light" alt="project-image"></p>
 
-2. Authorization with JWT:
-myCommerce API REST incorporates industry-standard authentication and authorization mechanisms using JSON Web Tokens (JWT). It ensures secure access to the API endpoints and protects sensitive data by verifying the identity and authorization of clients. With JWT-based authentication, clients can obtain a token upon successful login, and subsequent requests to the API endpoints are validated using the provided token, thus ensuring secure access to protected resources.
+<p id="description">myCommerce API REST is an application programming interface (API) designed specifically for an online commerce platform. It offers a comprehensive set of features and functionalities to facilitate seamless communication and data management between client applications and the commerce platform.</p>
 
-3. End-to-End (E2E) Tests:
-myCommerce API REST is equipped with a comprehensive suite of end-to-end (E2E) tests. These tests cover the entire API workflow, simulating real-world scenarios to validate the functionality, reliability, and performance of the API. E2E tests ensure that all the components and integrations within the API ecosystem, including the CRUD functions and authorization mechanisms, are working seamlessly and as expected. This helps identify and rectify any issues or bugs, ensuring a robust and error-free API implementation.
+<h2>🚀 Demo</h2>
 
-Overall, myCommerce API REST provides a powerful and reliable foundation for building and integrating an online commerce platform. With its CRUD operations, JWT-based authorization, and thorough E2E testing, it offers a secure and efficient solution for managing e-commerce-related data and ensuring a seamless experience for both clients and end-users.
+[mycommerce-danifanton.vercel.app/api/v1/api-docs](mycommerce-danifanton.vercel.app/api/v1/api-docs)
+
+  
+  
+<h2>🧐 Features</h2>
+
+Here're some of the project's best features:
+
+*   1\. CRUD Functions
+*   2\. Authorization with JWT
+*   3\. End-to-End (E2E) Tests
+*   4\. Implements Clean Architecture
+*   5 Database design with Sequelize-Migrations ORM
+
+<h2>🛠️ Installation Steps:</h2>
+
+<p>1. Clone the repository</p>
+
+```
+git clone https://github.com/Danifantonrxd/myCommerce.git
+```
+
+<p>2. Go into folder and install dependencies</p>
+
+```
+npm install
+```
+
+<p>3. Create .env file and configure it using .env.example for help</p>
+
+<p>4. Raise a postgres image using docker-compose</p>
+
+```
+docker-compose up -d postgres
+```
+
+<p>5. Create database tables using command:</p>
+
+```
+npm run migrations:run
+```
+
+<p>6. Finally run server</p>
+
+```
+npm run start
+```
+
+<p>7. You can also use the vercel project link to use the API</p>
+
+<p>8. Try posting to mycommerce-danifanton.vercel.app/api/v1/users</p>
+
+  
+  
+<h2>💻 Built with</h2>
+
+Technologies used in the project:
+
+*   NodeJS
+*   Express
+*   Sequelize ORM
+*   JWT
+*   Vercel

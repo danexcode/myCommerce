@@ -1,18 +1,5 @@
 const express = require('express');
-
 const swaggerUi = require('swagger-ui-express');
-const { SwaggerUIBundle, SwaggerUIStandalonePreset }  = require("swagger-ui-dist");
-
-const swaggerDoc = require('../../swagger.json');
-
-const CSS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css';
-
-const options = {
-  swaggerOptions: {
-      url: "/api-docs/swagger.json",
-  },
-  customCssUrl: CSS_URL,
-};
 
 const productsRouter = require('./products.router');
 const categoriesRouter = require('./categories.router');
@@ -20,6 +7,13 @@ const usersRouter = require('./users.router');
 const ordersRouter = require('./orders.router');
 const authRouter = require('./auth.router');
 const profileRouter = require('./profile.router');
+const swaggerDoc = require('../../swagger.json');
+
+const CSS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css';
+
+const options = {
+  customCssUrl: CSS_URL,
+};
 
 function routerApi(app) {
   const router = express.Router();
@@ -31,7 +25,6 @@ function routerApi(app) {
   router.use('/auth', authRouter);
   router.use('/profile', profileRouter);
   router.use('/api-docs', swaggerUi.serveFiles(swaggerDoc, options), swaggerUi.setup(swaggerDoc, options));
-  //router.get("/api-docs/swagger.json", (req, res) => res.json(swaggerDoc));
 }
 
 module.exports = routerApi;
