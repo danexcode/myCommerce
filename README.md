@@ -4,9 +4,9 @@
 
 <p id="description">myCommerce API REST is an application programming interface (API) designed specifically for an online commerce platform. It offers a comprehensive set of features and functionalities to facilitate seamless communication and data management between client applications and the commerce platform.</p>
 
-<h2>🚀 Documentation</h2>
+<h2>🚀 Swagger API Documentation</h2>
 
-[vercel.app/api-docs](https://mycommerce-danifanton.vercel.app/api/v1/api-docs "API Documentation")
+[vercel.app/api-docs/swagger.json](https://mycommerce-danifanton.vercel.app/api/v1/api-docs "API Documentation")
 
   
 <h2>🧐 Features</h2>
