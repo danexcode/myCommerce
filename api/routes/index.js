@@ -1,6 +1,6 @@
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
-const { SwaggerUIBundle, SwaggerUIStandalonePreset } = require('swagger-ui-dist');
+//const { SwaggerUIBundle, SwaggerUIStandalonePreset } = require('swagger-ui-dist');
 
 const productsRouter = require('./products.router');
 const categoriesRouter = require('./categories.router');
