@@ -6,7 +6,7 @@
 
 <h2>🚀 Documentation</h2>
 
-[mycommerce-danifanton.vercel.app/api/v1/api-docs](https://mycommerce-danifanton.vercel.app/api/v1/api-docs)
+[vercel.app/api-docs](https://mycommerce-danifanton.vercel.app/api/v1/api-docs "API Documentation")
 
   
 <h2>🧐 Features</h2>
