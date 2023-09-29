@@ -8,19 +8,6 @@
 
 [mycommerce-danifanton.vercel.app/api/v1/api-docs](https://mycommerce-danifanton.vercel.app/api/v1/api-docs)
 
-<h2>🚀 Youtube</h2>
-
-https://youtube.com
-
-[link text itself]: http://www.reddit.com
-
-[I'm an inline-style link](https://www.google.com)
-
-[I'm an inline-style link with title](https://www.google.com "Google's Homepage")
-
-[I'm a reference-style link][Arbitrary case-insensitive reference text]
-
-  
   
 <h2>🧐 Features</h2>
 

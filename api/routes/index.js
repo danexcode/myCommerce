@@ -1,6 +1,6 @@
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
-//const { SwaggerUIBundle, SwaggerUIStandalonePreset } = require('swagger-ui-dist');
+const { SwaggerUIBundle, SwaggerUIStandalonePreset } = require('swagger-ui-dist');
 
 const productsRouter = require('./products.router');
 const categoriesRouter = require('./categories.router');
@@ -13,9 +13,6 @@ const swaggerDoc = require('../../swagger.json');
 const CSS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css';
 
 const options = {
-  swaggerOptions: {
-    url: "/api-docs/swagger.json",
-  },
   customCssUrl: CSS_URL,
 };
 
