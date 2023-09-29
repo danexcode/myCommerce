@@ -1,18 +1,10 @@
 const express = require('express');
-const pool = require('pg');
-const cors = require('cors');
-const swaggerUi = require('swagger-ui-express');
-const { SwaggerUIBundle, SwaggerUIStandalonePreset } = require('swagger-ui-dist');
+const cors = require('cors')
+const pool = require('pg');  // this is for vercel to work
 
 const routerApi = require('./routes');
 const { errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/error.handler');
 const setupAuthStrategies = require('./auth');
-const swaggerDoc = require('../swagger.json');
-const CSS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css';
-
-const options = {
-  customCssUrl: CSS_URL,
-};
 
 function createApp() {
   const app = express();
@@ -22,7 +14,9 @@ function createApp() {
 
   setupAuthStrategies();
 
-  app.get('/', swaggerUi.serveFiles(swaggerDoc, options), swaggerUi.setup(swaggerDoc, options));
+  app.get('/', (req, res) => {
+    res.send('Hola mi server en express');
+  });
 
   // app.get('/nueva-ruta', checkApiKey, (req, res) => {
   //   res.send('Hola, soy una nueva ruta');
