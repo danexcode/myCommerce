@@ -221,7 +221,7 @@
         "description": "* Must be logged and have an admin user",
         "parameters": [
           {
-            "name": "Authorization",
+            "name": "authorization",
             "in": "header",
             "description": "jwt-token",
             "required": true,
@@ -330,7 +330,7 @@
             }
           },
           {
-            "name": "Authorization",
+            "name": "authorization",
             "in": "header",
             "description": "jwt-token",
             "required": true,
@@ -458,7 +458,7 @@
             }
           },
           {
-            "name": "Authorization",
+            "name": "authorization",
             "in": "header",
             "description": "jwt-token",
             "required": true,
@@ -687,7 +687,7 @@
             }
           },
           {
-            "name": "Authorization",
+            "name": "authorization",
             "in": "header",
             "description": "jwt-token",
             "required": true,
@@ -775,7 +775,7 @@
         "description": "Endpoint to create a category in the database, * Must be logged as an admin user",
         "parameters": [
           {
-            "name": "Authorization",
+            "name": "authorization",
             "in": "header",
             "description": "jwt-token",
             "required": true,
@@ -1016,7 +1016,7 @@
             }
           },
           {
-            "name": "Authorization",
+            "name": "authorization",
             "in": "header",
             "description": "jwt-token",
             "required": true,
@@ -1194,7 +1194,7 @@
             }
           },
           {
-            "name": "Authorization",
+            "name": "authorization",
             "in": "header",
             "description": "jwt-token",
             "required": true,
@@ -1282,7 +1282,7 @@
         "description": "Endpoint to create a product in the database, * Must be logged as an admin user",
         "parameters": [
           {
-            "name": "Authorization",
+            "name": "authorization",
             "in": "header",
             "description": "jwt-token",
             "required": true,
@@ -1712,7 +1712,7 @@
             }
           },
           {
-            "name": "Authorization",
+            "name": "authorization",
             "in": "header",
             "description": "jwt-token",
             "required": true,
@@ -1907,7 +1907,7 @@
             }
           },
           {
-            "name": "Authorization",
+            "name": "authorization",
             "in": "header",
             "description": "jwt-token",
             "required": true,
@@ -1995,7 +1995,7 @@
         "description": "Endpoint to register a purchase in the database, * Must be logged.",
         "parameters": [
           {
-            "name": "Authorization",
+            "name": "authorization",
             "in": "header",
             "description": "jwt-token",
             "required": true,
@@ -2233,7 +2233,7 @@
             }
           },
           {
-            "name": "Authorization",
+            "name": "authorization",
             "in": "header",
             "description": "jwt-token",
             "required": true,
@@ -2696,7 +2696,7 @@
         "description": "Endpoint to see user information",
         "parameters": [
           {
-            "name": "Authorization",
+            "name": "authorization",
             "in": "header",
             "description": "jwt-token",
             "required": true,
@@ -2753,7 +2753,7 @@
         "description": "Endpoint for watching all the user's orders",
         "parameters": [
           {
-            "name": "Authorization",
+            "name": "authorization",
             "in": "header",
             "description": "jwt-token",
             "required": true,
