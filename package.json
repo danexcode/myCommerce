@@ -10,14 +10,23 @@
     "lint": "eslint",
     "migrations:generate": "sequelize-cli migration:generate --name",
     "migrations:run": "sequelize-cli db:migrate",
-    "migrations:revert": "sequelize-cli db:migrate:undo"
+    "migrations:revert": "sequelize-cli db:migrate:undo",
+    "seed:all": "sequelize-cli db:seed:all",
+    "seed:undo": "sequelize-cli db:seed:undo:all",
+    "e2e": "NODE_ENV=e2e jest --config ./jest-e2e.json --verbose --detectOpenHandles --forceExit --runInBand",
+    "e2e:ci": "NODE_ENV=ci jest --config ./jest-e2e.json --verbose --detectOpenHandles --forceExit --runInBand",
+    "e2e:coverage": "NODE_ENV=e2e jest --config ./jest-e2e.json --verbose --detectOpenHandles --forceExit --runInBand --coverage"
   },
   "author": "danifanton",
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^29.5.5",
+    "@types/supertest": "^2.0.13",
     "eslint": "^8.49.0",
+    "jest": "^29.7.0",
     "nodemon": "^3.0.1",
-    "prettier": "^3.0.3"
+    "prettier": "^3.0.3",
+    "supertest": "^6.3.3"
   },
   "dependencies": {
     "@hapi/boom": "^10.0.0",
@@ -37,6 +46,7 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui": "^5.7.2",
     "swagger-ui-dist": "^5.7.2",
-    "swagger-ui-express": "^5.0.0"
+    "swagger-ui-express": "^5.0.0",
+    "umzug": "^3.3.1"
   }
 }

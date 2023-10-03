@@ -3,7 +3,6 @@ const passport = require('passport');
 
 const OrderService = require('../services/order.service');
 const validateDataHandler = require('../middlewares/validator.handler');
-const { checkRoles } = require('../middlewares/auth.handler');
 const { getOrderDto, createOrderDto } = require('../dtos/order.dto');
 const { checkSum } = require('../middlewares/math.handler');
 

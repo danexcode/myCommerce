@@ -626,46 +626,6 @@
                 }
               }
             }
-          },
-          "409": {
-            "description": "Conflict with data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "statusCode": {
-                      "type": "integer",
-                      "example": 409
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "SequelizeUniqueConstraintError"
-                    },
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "message": {
-                            "type": "string",
-                            "example": "email must be unique"
-                          },
-                          "type": {
-                            "type": "string",
-                            "example": "unique violation"
-                          },
-                          "...": {
-                            "type": "string",
-                            "example": "and so much properties"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
           }
         }
       },

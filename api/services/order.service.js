@@ -30,6 +30,13 @@ class OrderService {
       };
       const newItem = await models.OrderProduct.create(itemBody);
       items.push(newItem);
+
+      const productId = products[i].productId;
+      const product = await models.Product.findByPk(productId);
+      const stockUpdate = {
+        stock: product.stock - products[i].amount,
+      }
+      product.update(stockUpdate);
     }
     return items;
   }

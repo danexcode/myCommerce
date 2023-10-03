@@ -1,4 +1,4 @@
-const env = process.env.NODE_ENV || 'dev';
+const env = process.env.NODE_ENV || 'e2e';
 
 const envs = {
   'dev': '.env',

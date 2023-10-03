@@ -40,6 +40,9 @@ class UserService {
 
   async update(id, changes) {
     const user = await this.findOne(id);
+    if (changes.password) {
+      changes.password = await bcrypt.hash(changes.password, 10);
+    }
     changes.updatedAt = Date.now();
     const updatedUser = await user.update(changes);
     delete updatedUser.dataValues.password;

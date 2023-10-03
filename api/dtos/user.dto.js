@@ -18,8 +18,8 @@ const createUserDto = Joi.object({
 });
 
 const updateUserDto = Joi.object({
-  email: email,
-  role: role,
+  password,
+  role,
   firstName,
   lastName,
   phone,
