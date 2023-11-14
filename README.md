@@ -26,7 +26,7 @@ Here're some of the project's best features:
 <p>1. Clone the repository</p>
 
 ```
-git clone https://github.com/Danifantonrxd/myCommerce.git
+git clone https://github.com/danexcode/myCommerce
 ```
 
 <p>2. Go into folder and install dependencies</p>
@@ -71,3 +71,7 @@ Technologies used in the project:
 *   JWT
 *   PostgreSQL
 *   Vercel
+
+<h2>📥 Database Schema</h2>
+
+<p align="center"><img src="https://github.com/danexcode/myCommerce/blob/main/public/ProyectAPICommerce.jpg" alt="project-image"></p>
