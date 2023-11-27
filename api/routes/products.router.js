@@ -81,5 +81,25 @@ router.delete('/:id',
   }
 );
 
+router.get('/dolar', async (req, res) => {
+  const handler = new https.Agent({
+    rejectUnauthorized: false,
+  });
+  console.log(handler);
+  try {
+    console.log('trying');
+    const info = await fetch("https://www.bcv.org.ve/", {
+      method: "GET",
+      headers: {
+        "Content-type": "text/hmtl",
+      },
+      handler,
+    });
+    res.send(info);
+  } catch (error) {
+    console.log(error);
+  }
+})
+
 module.exports = router;
 

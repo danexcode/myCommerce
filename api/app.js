@@ -20,26 +20,6 @@ function createApp() {
     res.send('Hola mi server en express');
   });
 
-  app.get('/dolar', async (req, res) => {
-    const handler = new https.Agent({
-      rejectUnauthorized: false,
-    });
-    console.log(handler);
-    try {
-      console.log('trying');
-      const info = await fetch("https://www.bcv.org.ve/", {
-        method: "GET",
-        headers: {
-          "Content-type": "text/hmtl",
-        },
-        handler,
-      });
-      res.send(info);
-    } catch (error) {
-      console.log(error);
-    }
-  })
-
   // app.get('/nueva-ruta', checkApiKey, (req, res) => {
   //   res.send('Hola, soy una nueva ruta');
   // });
